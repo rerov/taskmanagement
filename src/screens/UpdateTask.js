@@ -1,10 +1,9 @@
 import "../App.css";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Pane,
-  Heading,
   TextInputField,
   Text,
   Textarea,
@@ -12,13 +11,13 @@ import {
   Button,
 } from "evergreen-ui";
 
-
 import { useDispatch } from "react-redux";
-import { addTask } from "../store/slice/AllTaskOperationsSlice";
+import { updateTask, getTaskById } from "../store/slice/AllTaskOperationsSlice";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/header";
+import { useParams } from "react-router-dom";
 
-const AddTask = () => {
+const UpdateTask = () => {
   const [checked, setChecked] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -26,13 +25,32 @@ const AddTask = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSubmission = () => {
+  let { id } = useParams();
+
+    useEffect(() => {
+        dispatch(getTaskById(id))
+        .then((data) => {
+            setChecked(data.payload.completed)
+            setTitle(data.payload.title)
+            setDescription(data.payload.description)
+        })
+    }, [])
+
+
+  const handleUpdate = () => {
     dispatch(
-      addTask({ title: title, description: description, completed: checked })
-    ).then(() => {
-      navigate("/");
-    });
+      updateTask({
+        id: id,
+        title: title,
+        description: description,
+        completed: checked,
+      })
+    )
+    .then(() => {
+      navigate("/")
+    })
   };
+
   return (
     <Pane className="app">
       <Header />
@@ -42,6 +60,7 @@ const AddTask = () => {
             <Text>Give your task a title</Text>
             <TextInputField
               label=""
+              value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="start typing a title..."
             />
@@ -52,6 +71,7 @@ const AddTask = () => {
             <Textarea
               minHeight={250}
               name="textarea-1"
+              value={description}
               placeholder="Textarea placeholder..."
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -65,12 +85,8 @@ const AddTask = () => {
             />
           </Pane>
           <Pane className="form-field">
-            <Button
-              onClick={handleSubmission}
-              marginRight={16}
-              intent="success"
-            >
-              Save
+            <Button onClick={handleUpdate} marginRight={16} intent="success">
+              Update
             </Button>
           </Pane>
         </Pane>
@@ -79,4 +95,4 @@ const AddTask = () => {
   );
 };
 
-export default AddTask;
+export default UpdateTask;

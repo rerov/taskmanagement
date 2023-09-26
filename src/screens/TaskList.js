@@ -10,17 +10,18 @@ import {
 import {
   Pane,
   Checkbox,
-  Heading,
   Button,
   EditIcon,
   TrashIcon,
   Text,
 } from "evergreen-ui";
 
-import { Link } from "react-router-dom";
 
+import Header from "../components/header";
+import { useNavigate } from "react-router-dom";
 function TaskList() {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const tasks = useSelector((state) => state.tasks.data);
   const [checkedTasks, setCheckedTasks] = useState();
 
@@ -36,31 +37,26 @@ function TaskList() {
   console.log(tasks, "tasks");
   return (
     <Pane className="app">
-      <Pane className="header">
-        <Heading color="gray">Task Management App</Heading>
-        <Text className="nav-link">
-          <Link to="/task/add">Add New Task</Link>
-        </Text>
-      </Pane>
+  <Header />
       <Pane className="tasks">
         {tasks?.map((task, index) => (
           <Pane key={index} className="task">
             <Checkbox
               className="checkbox"
               label={<Text style={{ fontSize: "15px" }}>{task.title}</Text>}
-              checked={checkedTasks[index]}
+              checked={
+                checkedTasks ? checkedTasks[index] : false
+              }
               onChange={(e) => {
                 const updatedCheckedTasks = [...checkedTasks];
                 updatedCheckedTasks[index] = e.target.checked;
                 setCheckedTasks(updatedCheckedTasks);
-
-                // Veritabanında güncelleme yapma işlemi
                 dispatch(
                   updateTask({ id: task._id, completed: e.target.checked })
                 );
               }}
             />
-            <Button marginY={8} marginRight={12} iconBefore={EditIcon}>
+            <Button onClick={() => navigate(`/task/${task._id}/edit`)} marginY={8} marginRight={12} iconBefore={EditIcon}>
               Edit
             </Button>
             <Button
