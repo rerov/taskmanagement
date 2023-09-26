@@ -1,57 +1,15 @@
-import logo from "./logo.svg";
-import "./App.css";
-
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getTasks,
-  updateTask,
-  deleteTask,
-  addTask,
-} from "./store/slice/AllTaskOperationsSlice";
-import {
-  Pane,
-  Checkbox,
-  Heading,
-  Button,
-  EditIcon,
-  TrashIcon,
-  Text,
-} from "evergreen-ui";
-
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import TaskList from "./screens/TaskList";
+import AddTask from "./screens/AddTask";
 function App() {
-  const dispatch = useDispatch();
-  const tasks = useSelector((state) => state.tasks);
-  const [checked, setCheched] = useState(false);
-  useEffect(() => {
-    dispatch(getTasks());
-  }, [dispatch]);
-
   return (
-    <Pane className="app">
-      <Heading color="gray">Task Management App</Heading>
-      <Pane className="tasks">
-        <Pane className="task">
-          <Checkbox
-            className="checkbox"
-            label={<Text style={{ fontSize: "15px" }}>Benim Özel Metnim</Text>}
-            checked={checked}
-            onChange={(e) => setCheched(e.target.checked)}
-          />
-          <Button marginY={8} marginRight={12} iconBefore={EditIcon}>
-            Edit
-          </Button>
-          <Button
-            marginY={8}
-            marginRight={12}
-            iconBefore={TrashIcon}
-            intent="danger"
-          >
-            Delete...
-          </Button>
-        </Pane>
-      </Pane>
-    </Pane>
+    <div>
+      <Routes>
+        <Route path="/" element={<TaskList />} />
+        <Route path="/addtask" element={<AddTask />} />
+      </Routes>
+    </div>
   );
 }
 

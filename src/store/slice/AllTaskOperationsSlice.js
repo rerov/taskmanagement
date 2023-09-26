@@ -24,7 +24,9 @@ export const addTask = createAsyncThunk("addTask", async (taskData, {getState, r
 export const updateTask = createAsyncThunk("updateTask", async (taskData, {getState, rejectWithValue}) => {
     try {
         const {data} = await axios.put(`http://localhost:8000/api/tasks/${taskData.id}`, taskData)
+        console.log(data)
         return data; 
+
         
     } catch (error) {
         return rejectWithValue(error.response)
