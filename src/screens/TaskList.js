@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getTasks,
   updateTask,
-  deleteTask
+  deleteTask,
 } from "../store/slice/AllTaskOperationsSlice";
 import {
   Pane,
@@ -15,13 +15,12 @@ import {
   TrashIcon,
   Text,
 } from "evergreen-ui";
-
-
+import { Link } from "react-router-dom";
 import Header from "../components/header";
 import { useNavigate } from "react-router-dom";
 function TaskList() {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const tasks = useSelector((state) => state.tasks.data);
   const [checkedTasks, setCheckedTasks] = useState();
 
@@ -37,16 +36,13 @@ function TaskList() {
   console.log(tasks, "tasks");
   return (
     <Pane className="app">
-  <Header />
+      <Header />
       <Pane className="tasks">
         {tasks?.map((task, index) => (
           <Pane key={index} className="task">
             <Checkbox
               className="checkbox"
-              label={<Text style={{ fontSize: "15px" }}>{task.title}</Text>}
-              checked={
-                checkedTasks ? checkedTasks[index] : false
-              }
+              checked={checkedTasks ? checkedTasks[index] : false}
               onChange={(e) => {
                 const updatedCheckedTasks = [...checkedTasks];
                 updatedCheckedTasks[index] = e.target.checked;
@@ -56,7 +52,18 @@ function TaskList() {
                 );
               }}
             />
-            <Button onClick={() => navigate(`/task/${task._id}/edit`)} marginY={8} marginRight={12} iconBefore={EditIcon}>
+            <Link
+              style={{ flex: 1, marginLeft: "10px" }}
+              to={`/task/${task._id}`}
+            >
+              <Text>{task.title}</Text>
+            </Link>
+            <Button
+              onClick={() => navigate(`/task/${task._id}/edit`)}
+              marginY={8}
+              marginRight={12}
+              iconBefore={EditIcon}
+            >
               Edit
             </Button>
             <Button
