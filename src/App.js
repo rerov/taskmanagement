@@ -1,39 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
 
-import React, {useEffect} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getTasks, updateTask, deleteTask, addTask } from './store/slice/AllTaskOperationsSlice';
-
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getTasks,
+  updateTask,
+  deleteTask,
+  addTask,
+} from "./store/slice/AllTaskOperationsSlice";
+import {
+  Pane,
+  Checkbox,
+  Heading,
+  Button,
+  EditIcon,
+  TrashIcon,
+  Text,
+} from "evergreen-ui";
 
 function App() {
-  const dispatch = useDispatch()
-  const tasks = useSelector((state) => state.tasks)
-  
-
-
+  const dispatch = useDispatch();
+  const tasks = useSelector((state) => state.tasks);
+  const [checked, setCheched] = useState(false);
   useEffect(() => {
-    dispatch(getTasks())
-  }, [dispatch])
-
+    dispatch(getTasks());
+  }, [dispatch]);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Pane className="app">
+      <Heading color="gray">Task Management App</Heading>
+      <Pane className="tasks">
+        <Pane className="task">
+          <Checkbox
+            className="checkbox"
+            label={<Text style={{ fontSize: "15px" }}>Benim Özel Metnim</Text>}
+            checked={checked}
+            onChange={(e) => setCheched(e.target.checked)}
+          />
+          <Button marginY={8} marginRight={12} iconBefore={EditIcon}>
+            Edit
+          </Button>
+          <Button
+            marginY={8}
+            marginRight={12}
+            iconBefore={TrashIcon}
+            intent="danger"
+          >
+            Delete...
+          </Button>
+        </Pane>
+      </Pane>
+    </Pane>
   );
 }
 
