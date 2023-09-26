@@ -1,7 +1,22 @@
 import logo from './logo.svg';
 import './App.css';
 
+import React, {useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTasks, updateTask, deleteTask, addTask } from './store/slice/AllTaskOperationsSlice';
+
+
 function App() {
+  const dispatch = useDispatch()
+  const tasks = useSelector((state) => state.tasks)
+  
+
+
+  useEffect(() => {
+    dispatch(getTasks())
+  }, [dispatch])
+
+
   return (
     <div className="App">
       <header className="App-header">

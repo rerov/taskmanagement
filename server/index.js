@@ -2,6 +2,7 @@
 const express = require('express') 
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 // CREATE THE APPLICATION 
 const app = express()
@@ -25,7 +26,7 @@ const Task = mongoose.model('Task', taskSchema);
 // MIDDLEWARE 
 
 app.use(bodyParser.json())
-
+app.use(cors())
 // CREATE A NEW TASK 
 
 app.post('/api/tasks', async(req, res) => {
