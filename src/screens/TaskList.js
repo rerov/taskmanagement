@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getTasks,
   updateTask,
-  deleteTask,
-  addTask,
+  deleteTask
 } from "../store/slice/AllTaskOperationsSlice";
 import {
   Pane,
@@ -18,6 +17,8 @@ import {
   Text,
 } from "evergreen-ui";
 
+import { Link } from "react-router-dom";
+
 function TaskList() {
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks.data);
@@ -25,19 +26,21 @@ function TaskList() {
 
   useEffect(() => {
     dispatch(getTasks());
-    setCheckedTasks(tasks.map((task) => task.completed))
+    setCheckedTasks(tasks.map((task) => task.completed));
   }, [dispatch, checkedTasks]);
 
   const handleDelete = (id) => {
     dispatch(deleteTask(id));
     dispatch(getTasks());
   };
-  console.log(tasks, "tasks")
+  console.log(tasks, "tasks");
   return (
     <Pane className="app">
       <Pane className="header">
         <Heading color="gray">Task Management App</Heading>
-        <Text className="nav-link">Add New Task</Text>
+        <Text className="nav-link">
+          <Link to="/task/add">Add New Task</Link>
+        </Text>
       </Pane>
       <Pane className="tasks">
         {tasks?.map((task, index) => (
@@ -67,7 +70,7 @@ function TaskList() {
               intent="danger"
               onClick={() => handleDelete(task._id)}
             >
-              Delete...
+              Delete
             </Button>
           </Pane>
         ))}

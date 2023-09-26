@@ -44,3 +44,11 @@ body {
   cursor: pointer;
   padding: 0px 20px;
 }
+
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
