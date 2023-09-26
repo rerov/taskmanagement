@@ -7,7 +7,9 @@ function App() {
     <div>
       <Routes>
         <Route path="/" element={<TaskList />} />
-        <Route path="/addtask" element={<AddTask />} />
+        <Route path="/task/add"  element={<AddTask />} />
+        {/* <Route path="/task/:id" exact component={TaskDetail} />
+          <Route path="/task/:id/edit" exact component={TaskForm} /> */}
       </Routes>
     </div>
   );
