@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import { ApiUrl } from "../ApiUrl";
 export const getTasks = createAsyncThunk(
   "getTasks",
   async (object, { getState, rejectWithValue }) => {
     try {
-      const { data } = await axios.get("http://localhost:8000/api/tasks");
+      const { data } = await axios.get(`${ApiUrl}/api/tasks`);
       return data;
     } catch (error) {
       rejectWithValue(error.response);
@@ -17,10 +17,7 @@ export const addTask = createAsyncThunk(
   "addTask",
   async (taskData, { getState, rejectWithValue }) => {
     try {
-      const { data } = await axios.post(
-        "http://localhost:8000/api/tasks",
-        taskData
-      );
+      const { data } = await axios.post(`${ApiUrl}/api/tasks`, taskData);
 
       return data;
     } catch (error) {
@@ -34,7 +31,7 @@ export const updateTask = createAsyncThunk(
   async (taskData, { getState, rejectWithValue }) => {
     try {
       const { data } = await axios.put(
-        `http://localhost:8000/api/tasks/${taskData.id}`,
+        `${ApiUrl}/api/tasks/${taskData.id}`,
         taskData
       );
       return data;
@@ -48,9 +45,7 @@ export const deleteTask = createAsyncThunk(
   "deleteTask",
   async (taskID, { getState, rejectWithValue }) => {
     try {
-      const { data } = await axios.delete(
-        `http://localhost:8000/api/tasks/${taskID}`
-      );
+      const { data } = await axios.delete(`${ApiUrl}/api/tasks/${taskID}`);
       return data;
     } catch (error) {
       rejectWithValue(error.response);
@@ -62,12 +57,10 @@ export const getTaskById = createAsyncThunk(
   "getTaskById",
   async (taskID, { getState, rejectWithValue }) => {
     try {
-      const { data } = await axios.get(
-        `http://localhost:8000/api/tasks/${taskID}`
-      );
-      return data; 
+      const { data } = await axios.get(`${ApiUrl}/api/tasks/${taskID}`);
+      return data;
     } catch (error) {
-        rejectWithValue(error.response)
+      rejectWithValue(error.response);
     }
   }
 );
@@ -79,21 +72,25 @@ const AllTaskOperationsSlice = createSlice({
     loading: false,
     isSuccess: false,
     message: "",
+    error: null,
   },
   reducers: {},
   extraReducers: {
     [getTasks.pending]: (state, action) => {
       state.loading = true;
+      state.error = null;
     },
     [getTasks.fulfilled]: (state, action) => {
       state.data = action.payload;
       state.loading = false;
       state.isSuccess = true;
+      state.error = null;
     },
     [getTasks.rejected]: (state, action) => {
       state.loading = false;
       state.isSuccess = false;
       state.message = "failed";
+      state.error = action.payload;
     },
   },
 });

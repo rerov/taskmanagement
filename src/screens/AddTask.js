@@ -4,14 +4,13 @@ import React, { useState } from "react";
 
 import {
   Pane,
-  Heading,
   TextInputField,
   Text,
   Textarea,
   Checkbox,
   Button,
+  toaster
 } from "evergreen-ui";
-
 
 import { useDispatch } from "react-redux";
 import { addTask } from "../store/slice/AllTaskOperationsSlice";
@@ -23,15 +22,23 @@ const AddTask = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmission = () => {
-    dispatch(
-      addTask({ title: title, description: description, completed: checked })
-    ).then(() => {
-      navigate("/");
-    });
+    if (title && description) {
+      dispatch(
+        addTask({ title: title, description: description, completed: checked })
+      ).then(() => {
+        navigate("/");
+      })
+      .catch((err) => console.log(err, "errr"))
+    }
+    else {
+      toaster.warning('Make sure you fill in all fields.')
+
+    }
   };
   return (
     <Pane className="app">
@@ -44,6 +51,7 @@ const AddTask = () => {
               label=""
               onChange={(e) => setTitle(e.target.value)}
               placeholder="start typing a title..."
+              
             />
           </Pane>
 
@@ -52,8 +60,9 @@ const AddTask = () => {
             <Textarea
               minHeight={250}
               name="textarea-1"
-              placeholder="Textarea placeholder..."
+              placeholder="start typing the description..."
               onChange={(e) => setDescription(e.target.value)}
+              
             />
           </Pane>
           <Pane className="form-field">

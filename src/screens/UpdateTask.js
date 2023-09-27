@@ -9,6 +9,7 @@ import {
   Textarea,
   Checkbox,
   Button,
+  toaster
 } from "evergreen-ui";
 
 import { useDispatch } from "react-redux";
@@ -27,28 +28,29 @@ const UpdateTask = () => {
 
   let { id } = useParams();
 
-    useEffect(() => {
-        dispatch(getTaskById(id))
-        .then((data) => {
-            setChecked(data.payload.completed)
-            setTitle(data.payload.title)
-            setDescription(data.payload.description)
-        })
-    }, [])
-
+  useEffect(() => {
+    dispatch(getTaskById(id)).then((data) => {
+      setChecked(data.payload.completed);
+      setTitle(data.payload.title);
+      setDescription(data.payload.description);
+    });
+  }, [id, dispatch]);
 
   const handleUpdate = () => {
-    dispatch(
-      updateTask({
-        id: id,
-        title: title,
-        description: description,
-        completed: checked,
-      })
-    )
-    .then(() => {
-      navigate("/")
-    })
+    if (title && description) {
+      dispatch(
+        updateTask({
+          id: id,
+          title: title,
+          description: description,
+          completed: checked,
+        })
+      ).then(() => {
+        navigate("/");
+      });
+    } else {
+      toaster.warning("Make sure you fill in all fields.");
+    }
   };
 
   return (
@@ -72,7 +74,7 @@ const UpdateTask = () => {
               minHeight={250}
               name="textarea-1"
               value={description}
-              placeholder="Textarea placeholder..."
+              placeholder="start typing the description..."
               onChange={(e) => setDescription(e.target.value)}
             />
           </Pane>
