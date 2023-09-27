@@ -4,16 +4,13 @@ import React, { useEffect, useState } from "react";
 
 import {
   Pane,
-  TextInputField,
   Text,
-  Textarea,
   Checkbox,
-  Button,
   Heading,
 } from "evergreen-ui";
 
 import { useDispatch } from "react-redux";
-import { updateTask, getTaskById } from "../store/slice/AllTaskOperationsSlice";
+import { getTaskById } from "../store/slice/AllTaskOperationsSlice";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/header";
 import { useParams } from "react-router-dom";
