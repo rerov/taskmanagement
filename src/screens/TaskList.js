@@ -84,6 +84,11 @@ function TaskList() {
             </Button>
           </Pane>
         ))}
+        {
+          tasks.length === 0 && (
+            <Text>0 task</Text>
+          )
+        }
       </Pane>
     </Pane>
   );
